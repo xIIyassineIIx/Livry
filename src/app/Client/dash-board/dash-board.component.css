@@ -1,0 +1,120 @@
+.activity {
+  background: #fff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  width: 70%;
+  margin-left: 1vw;
+  margin-top: 2vh;
+  display: inline-block;
+}
+
+.activity-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.activity-header h3 {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.search-bar {
+  padding: 0.4rem 0.8rem;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.add-btn {
+  background: #111827;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.add-btn:hover {
+  background: #222;
+}
+
+.activity-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.activity-table th {
+  text-align: left;
+  padding: 0.8rem;
+  color: #555;
+  font-weight: 500;
+  border-bottom: 1px solid #eee;
+}
+
+.activity-table td {
+  padding: 1rem 0.8rem;
+  vertical-align: middle;
+  border-bottom: 1px solid #f3f3f3;
+}
+
+.route {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.city {
+  font-weight: 500;
+  color: #333;
+}
+
+.line {
+  flex: 1;
+  height: 2px;
+  background: #f9ff00;
+  border-radius: 2px;
+  position: relative;
+}
+
+.recipient {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.recipient img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.status {
+  padding: 0.3rem 0.7rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.status.in-delivery {
+  background-color: #e0e8ff;
+  color: #2b4eff;
+}
+
+.status.delivered {
+  background-color: #dcfce7;
+  color: #15803d;
+}

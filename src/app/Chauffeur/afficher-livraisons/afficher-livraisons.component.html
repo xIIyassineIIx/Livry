@@ -1,0 +1,52 @@
+<div class="chauffeur-livraisons-container">
+  <h2>Livraisons disponibles</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Départ</th>
+        <th>Arrivée</th>
+        <th>Détails</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let livraison of livraisonsDisponibles">
+        <td>{{ livraison.depart }}</td>
+        <td>{{ livraison.arrivee }}</td>
+        <td>{{ livraison.details }}</td>
+        <td>{{ livraison.type }}</td>
+        <td>{{ livraison.dateLivraison | date:'short' }}</td>
+        <td>
+          <button (click)="accepterLivraison(livraison.id)">Accepter</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>Mes livraisons</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Départ</th>
+        <th>Arrivée</th>
+        <th>Détails</th>
+        <th>Type</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let livraison of mesLivraisons">
+        <td>{{ livraison.depart }}</td>
+        <td>{{ livraison.arrivee }}</td>
+        <td>{{ livraison.details }}</td>
+        <td>{{ livraison.type }}</td>
+        <td>{{ livraison.dateLivraison | date:'short' }}</td>
+        <td>{{ livraison.status }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

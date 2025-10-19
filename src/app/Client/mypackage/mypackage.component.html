@@ -1,0 +1,82 @@
+<div class="main-container">
+
+
+    <div id="map" class="map-container"></div>
+
+
+    <span class="activity">
+  <div class="activity-header" (click)="onClick()">
+    <h3>Activity</h3>
+    <div class="actions">
+      <input type="text" placeholder="Search..." class="search-bar" />
+      <select>
+        <option>Sort by: All</option>
+        <option>In Delivery</option>
+        <option>Delivered</option>
+      </select>
+      <button class="add-btn" routerLink="/ajoute-colis">+ Add Delivery</button>
+    </div>
+  </div>
+
+  <table class="activity-table">
+    <thead>
+      <tr>
+        <th>FLIGHT ROUTE</th>
+        <th>ARRIVAL DATE</th>
+        <th>RECIPIENT</th>
+        <th>STATUS</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <div class="route">
+            <span class="city">Las Vegas</span>
+            <div class="line"></div>
+            <span class="city">San Francisco</span>
+          </div>
+        </td>
+        <td>Oct 28, 2024</td>
+        <td class="recipient">
+          <img src="assets/deliver1.jpg" alt="Elon" />
+          <span>Elon Musk</span>
+        </td>
+        <td><span class="status in-delivery">In Delivery</span></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="route">
+            <span class="city">San Francisco</span>
+            <div class="line"></div>
+            <span class="city">Sacramento</span>
+          </div>
+        </td>
+        <td>Nov 5, 2024</td>
+        <td class="recipient">
+          <img src="assets/deliver2.jpg" alt="Mark" />
+          <span>Mark Zuckerberg</span>
+        </td>
+        <td><span class="status in-delivery">In Delivery</span></td>
+      </tr>
+      <tr>
+        <td>
+          <div class="route">
+            <span class="city">Sacramento</span>
+            <div class="line"></div>
+            <span class="city">San Jose</span>
+          </div>
+        </td>
+        <td>Oct 22, 2024</td>
+        <td class="recipient">
+          <img src="assets/deliver3.jpg" alt="Pavel" />
+          <span>Pavel Durov</span>
+        </td>
+        <td><span class="status delivered">Delivered</span></td>
+      </tr>
+    </tbody>
+  </table>
+</span>
+
+
+
+</div>

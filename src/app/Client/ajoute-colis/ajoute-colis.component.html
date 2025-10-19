@@ -1,0 +1,35 @@
+
+
+  <div class="form-section">
+    <label for="depart">Adresse de départ :</label>
+    <input id="depart" type="text" [(ngModel)]="livraison.depart" placeholder="Ex : Rue de départ">
+
+    <label for="arrivee">Adresse d'arrivée :</label>
+    <input id="arrivee" type="text" [(ngModel)]="livraison.arrivee" placeholder="Ex : Rue d'arrivée">
+
+    <label for="gouvernoratArrivee">Gouvernorat d'arrivée :</label>
+    <input id="gouvernoratArrivee" type="text" [(ngModel)]="livraison.gouvernoratArrivee" placeholder="Ex : Tunis">
+
+    <label for="latitudeDepart">Latitude de départ :</label>
+    <input id="latitudeDepart" type="number" [(ngModel)]="livraison.latitudeDepart" placeholder="Ex : 36.8065">
+
+    <label for="longitudeDepart">Longitude de départ :</label>
+    <input id="longitudeDepart" type="number" [(ngModel)]="livraison.longitudeDepart" placeholder="Ex : 10.1815">
+
+    <label for="details">Détails :</label>
+    <textarea id="details" [(ngModel)]="livraison.details" placeholder="Ex : fragile, alimentaire…"></textarea>
+
+    <label for="type">Type de livraison :</label>
+    <select id="type" [(ngModel)]="livraison.type">
+      <option value="">-- Sélectionner un type --</option>
+      <option value="document">Document</option>
+      <option value="alimentaire">Alimentaire</option>
+      <option value="fragile">Fragile</option>
+      <option value="autre">Autre</option>
+    </select>
+
+    <label for="dateLivraison">Date de livraison :</label>
+    <input id="dateLivraison" type="date" [(ngModel)]="livraison.dateLivraison">
+
+    <button (click)="ajouterLivraison()">Ajouter</button>
+  </div>
