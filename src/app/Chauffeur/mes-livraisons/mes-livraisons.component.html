@@ -1,0 +1,29 @@
+<div class="chauffeur-livraisons-container">
+  <h2>🚚 Mes livraisons</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Départ</th>
+        <th>Arrivée</th>
+        <th>Détails</th>
+        <th>Type</th>
+       <th>Status</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let livraison of mesLivraisons">
+        <td>{{ livraison.depart }}</td>
+        <td>{{ livraison.arrivee }}</td>
+        <td>{{ livraison.details }}</td>
+        <td>{{ livraison.type }}</td>
+        <td>{{ livraison.status }}</td>      
+        <td>
+          <button (click)="changerStatut(livraison.id!, 'DELIVERED')" >Deliverer</button>
+          <button (click)="changerStatut(livraison.id!, 'CANCELLED')" class="problem-btn">Signaler un problème</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

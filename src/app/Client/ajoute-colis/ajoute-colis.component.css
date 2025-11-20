@@ -1,32 +1,38 @@
-
-
 .form-section {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  background: white;
-  padding: 20px;
+  gap: 12px;
+  background: #fff;
+  padding: 25px;
   border-radius: 12px;
-  position: relative;
-  width: 70%;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  float: right;
-  margin-top: 2vh;
-  margin-right: 1vw;
+  width: 60%;
+  margin: 2vh auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
-input {
-  padding: 8px 12px;
+h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+input, textarea, select {
+  padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 14px;
+  width: 100%;
+}
+
+textarea {
+  resize: vertical;
+  min-height: 60px;
 }
 
 button {
-  margin-top: 10px;
-  padding: 10px 16px;
+  padding: 12px 18px;
   background: #00b894;
-  color: white;
+  color: #fff;
   border: none;
   border-radius: 8px;
   font-weight: 600;
@@ -36,11 +42,4 @@ button {
 
 button:hover {
   background: #019875;
-}
-select {
-  padding: 8px 12px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
-  background: white;
 }

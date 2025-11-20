@@ -1,85 +1,62 @@
-.chauffeur-livraisons-container {
-  width: 70%;
+.main-container {
+   width: 70vw;
   float: right;
   margin-top: 2vh;
-  margin-right: 3vw;
+  margin-right: 2vw;
   padding: 20px;
-  background-color: #f9fafb;
-  border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9fafe;
+}
+.driver-dashboard {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
   color: #333;
 }
 
-h2 {
-  text-align: center;
-  color: #2b6cb0;
-  font-size: 1.6rem;
-  margin-bottom: 15px;
-  border-bottom: 3px solid #2b6cb0;
-  padding-bottom: 5px;
-}
-
-table {
+.livraison-table {
   width: 100%;
   border-collapse: collapse;
-  margin-bottom: 30px;
-  background-color: white;
-  border-radius: 12px;
-  overflow: hidden;
+  margin: auto;
 }
 
-thead {
-  background-color: #2b6cb0;
+.livraison-table th, .livraison-table td {
+  border: 1px solid #ddd;
+  padding: 12px;
+  text-align: center;
+}
+
+.livraison-table th {
+  background-color: #007bff;
   color: white;
 }
 
-th, td {
-  padding: 12px 15px;
-  text-align: center;
+.livraison-table tr:nth-child(even) {
+  background-color: #f9f9f9;
 }
 
-tbody tr:nth-child(even) {
-  background-color: #f2f6fc;
-}
-
-tbody tr:hover {
-  background-color: #e2e8f0;
-  transition: background-color 0.2s ease-in-out;
+.livraison-table tr:hover {
+  background-color: #f1f1f1;
 }
 
 button {
-  background-color: #38a169;
+  padding: 5px 12px;
+  margin: 2px;
   border: none;
+  border-radius: 5px;
   color: white;
-  padding: 8px 14px;
-  border-radius: 8px;
   cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+  font-weight: bold;
 }
 
 button:hover {
-  background-color: #2f855a;
-  transform: scale(1.05);
+  opacity: 0.9;
 }
 
-button:active {
-  transform: scale(0.97);
-}
-
-@media (max-width: 768px) {
-  .chauffeur-livraisons-container {
-    width: 95%;
-    float: none;
-    margin: 20px auto;
-  }
-
-  table {
-    font-size: 0.9rem;
-  }
-
-  h2 {
-    font-size: 1.3rem;
-  }
-}
+button:nth-child(1) { background-color: #28a745; } /* Accepter */
+button:nth-child(2) { background-color: #007bff; } /* Livré */
+button:nth-child(3) { background-color: #dc3545; } /* Annuler */

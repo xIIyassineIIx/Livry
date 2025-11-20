@@ -1,0 +1,112 @@
+.chauffeur-livraisons-container {
+  width: 70%;
+  float: right;
+  margin-top: 2vh;
+  margin-right: 3vw;
+  padding: 20px;
+  background-color: #f9fafb;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+
+h2 {
+  text-align: center;
+  color: #2b6cb0;
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  border-bottom: 3px solid #2b6cb0;
+  padding-bottom: 5px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #2b6cb0;
+  color: white;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: center;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f2f6fc;
+}
+
+tbody tr:hover {
+  background-color: #e2e8f0;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button {
+  background-color: #38a169;
+  border: none;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease-in-out, transform 0.1s ease-in-out;
+}
+
+button:hover {
+  background-color: #2f855a;
+  transform: scale(1.05);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+@media (max-width: 768px) {
+  .chauffeur-livraisons-container {
+    width: 95%;
+    float: none;
+    margin: 20px auto;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+  }
+}
+.status-pending {
+  color: #d97706;
+  font-weight: bold;
+}
+
+.status-progress {
+  color: #2563eb;
+  font-weight: bold;
+}
+
+.status-done {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+.status-problem {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+.problem-btn {
+  background-color: #e53e3e;
+}
+
+.problem-btn:hover {
+  background-color: #c53030;
+}

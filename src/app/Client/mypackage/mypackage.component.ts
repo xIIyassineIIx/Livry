@@ -12,16 +12,7 @@ import { User } from '../../models/user';
   styleUrl: './mypackage.component.css'
 })
 export class MypackageComponent implements AfterViewInit {
-  client: User = new User(
-    1,
-    "Ali",
-    "Yassine",
-    "yassine.ali@example.com",
-    "CLIENT",
-    "Tunis",
-    36.8065,
-    10.1815
-  );
+  client: User = new User(0,'','','','','CLIENT');
 
     start = '10.1815,36.8065';
     end = '10.1955,36.8625';
@@ -66,14 +57,11 @@ export class MypackageComponent implements AfterViewInit {
       const route = data.routes[0].geometry;
       const decoded = polyline.decode(route).map(([lat, lon]) => [lat, lon] as [number, number]);
 
-      // Remove old route if exists
       if (this.routePolyline) this.map.removeLayer(this.routePolyline);
 
-      // Draw new route
       this.routePolyline = L.polyline(decoded as L.LatLngExpression[], { color: 'blue', weight: 5 }).addTo(this.map);
       this.map.fitBounds(this.routePolyline.getBounds());
 
-      // Update markers
       if (this.startMarker) this.map.removeLayer(this.startMarker);
       if (this.endMarker) this.map.removeLayer(this.endMarker);
 

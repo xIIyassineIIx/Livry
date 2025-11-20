@@ -1,52 +1,33 @@
-<div class="chauffeur-livraisons-container">
-  <h2>Livraisons disponibles</h2>
+<div class="main-container">
+<div class="driver-dashboard">
+  <h1>Mes Livraisons</h1>
 
-  <table>
+  <table class="livraison-table">
     <thead>
       <tr>
         <th>Départ</th>
         <th>Arrivée</th>
         <th>Détails</th>
         <th>Type</th>
-        <th>Date</th>
-        <th>Action</th>
+        <th>Status</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let livraison of livraisonsDisponibles">
+      <tr *ngFor="let livraison of myLivraisons">
         <td>{{ livraison.depart }}</td>
         <td>{{ livraison.arrivee }}</td>
         <td>{{ livraison.details }}</td>
         <td>{{ livraison.type }}</td>
-        <td>{{ livraison.dateLivraison | date:'short' }}</td>
+        <td>{{ livraison.status }}</td>
         <td>
-          <button (click)="accepterLivraison(livraison.id)">Accepter</button>
+          <button *ngIf="livraison.status === 'PENDING'" (click)="accepterLivraison(livraison.id!)">Accepter</button>
+          <button *ngIf="livraison.status === 'ACCEPTED'" (click)="updateStatus(livraison, 'DELIVERED')">Livré</button>
+          <button *ngIf="livraison.status === 'ACCEPTED'" (click)="updateStatus(livraison, 'CANCELED')">Annuler</button>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
 
-  <h2>Mes livraisons</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Départ</th>
-        <th>Arrivée</th>
-        <th>Détails</th>
-        <th>Type</th>
-        <th>Date</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let livraison of mesLivraisons">
-        <td>{{ livraison.depart }}</td>
-        <td>{{ livraison.arrivee }}</td>
-        <td>{{ livraison.details }}</td>
-        <td>{{ livraison.type }}</td>
-        <td>{{ livraison.dateLivraison | date:'short' }}</td>
-        <td>{{ livraison.status }}</td>
-      </tr>
-    </tbody>
-  </table>
 </div>

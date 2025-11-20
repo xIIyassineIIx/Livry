@@ -19,10 +19,9 @@ export class LivraisonService {
   }
 
   
-  getAvailableLivraisons(gouvernorat: string, latitude: number, longitude: number): Observable<Livraison[]> {
+  getAvailableLivraisons( latitude: number, longitude: number): Observable<Livraison[]> {
     return this.http.get<Livraison[]>(`${this.apiUrl}/available`, {
       params: {
-        gouvernorat,
         latitude: latitude.toString(),
         longitude: longitude.toString()
       }
@@ -35,8 +34,8 @@ export class LivraisonService {
   }
 
 
-  updateLivraisonStatus(livraisonId: number, chauffeurId: number, status: string): Observable<Livraison> {
-    return this.http.put<Livraison>(`${this.apiUrl}/${livraisonId}/status/${chauffeurId}`, { status });
+  updateLivraisonStatus(livraisonId: number, chauffeurId: number, status: string): Observable<object> {
+    return this.http.put(`${this.apiUrl}/${livraisonId}/status/${chauffeurId}`, status, {headers: { 'Content-Type': 'text/plain' }});
   }
 
 

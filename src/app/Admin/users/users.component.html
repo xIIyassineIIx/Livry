@@ -1,0 +1,70 @@
+<div class="main-container">
+<div class="users-container">
+  <h2>Gestion des utilisateurs</h2>
+
+  <div class="users-table card">
+    <table>
+      <thead>
+        <tr>
+          <th>Prénom</th>
+          <th>Nom</th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of users">
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            <!-- Role display / edit -->
+            <ng-container *ngIf="editingUserId !== user.id; else editRole">
+              {{ user.role }}
+            </ng-container>
+
+            <ng-template #editRole>
+              <select [(ngModel)]="selectedRole">
+                <option *ngFor="let role of roles" [value]="role">{{ role }}</option>
+              </select>
+            </ng-template>
+          </td>
+          <td>
+            <!-- Action buttons -->
+            <ng-container *ngIf="editingUserId !== user.id">
+              <button class="btn-edit" (click)="startEdit(user)">Modifier</button>
+              <button class="btn-delete" (click)="deleteUser(user)">Supprimer</button>
+            </ng-container>
+            <ng-container *ngIf="editingUserId === user.id">
+              <button class="btn-save" (click)="saveRole(user)">Enregistrer</button>
+              <button class="btn-cancel" (click)="cancelEdit()">Annuler</button>
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+<div class="add-user-card">
+  <h2>Ajouter un utilisateur</h2>
+
+  <form (ngSubmit)="addUser()" #userForm="ngForm">
+    <input type="text" placeholder="Prénom" [(ngModel)]="user.firstName" name="firstName" required>
+    <input type="text" placeholder="Nom" [(ngModel)]="user.lastName" name="lastName" required>
+    <input type="email" placeholder="Email" [(ngModel)]="user.email" name="email" required>
+
+    <select [(ngModel)]="user.role" name="role" required>
+      <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+    </select>
+
+    <button type="submit" class="btn-add">Créer le compte</button>
+  </form>
+
+  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+</div>
+</div>

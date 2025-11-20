@@ -1,12 +1,12 @@
+// src/app/models/user.ts
+export type UserRole = 'ADMIN' | 'CLIENT' | 'DRIVER' | 'MECHANIC';
 export class User {
     constructor(
-    public id: number,
-    public nom: string,
-    public prenom: string,
-    public email: string,
-    public role: 'CLIENT' | 'CHAUFFEUR',
-    public gouvernorat: string,
-    public latitude: number,
-    public longitude: number
-  ) {}
+        public id: number,
+        public firstName: string,
+        public lastName: string,
+        public email: string,
+        public password: string,
+        public role: UserRole,
+    ) {}
 }

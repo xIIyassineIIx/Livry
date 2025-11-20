@@ -1,0 +1,49 @@
+<div class="dashboard-container">
+  <h1>Tableau de bord</h1>
+
+  <div class="kpi-cards">
+
+    <div class="card total-deliveries">
+      <span class="material-icons icon">local_shipping</span>
+      <h3>Total Livraisons</h3>
+      <p>{{ dashboardData.totalDeliveries }}</p>
+    </div>
+
+    <div class="card pending-deliveries">
+      <span class="material-icons icon">update</span>
+      <h3>Livraisons en cours</h3>
+      <p>{{ dashboardData.pending }}</p>
+    </div>
+
+    <div class="card delivered">
+      <span class="material-icons icon">check_circle</span>
+      <h3>Livraisons terminées</h3>
+      <p>{{ dashboardData.delivered }}</p>
+    </div>
+
+    <div class="card total-users">
+      <span class="material-icons icon">group</span>
+      <h3>Total Users</h3>
+      <p>{{ dashboardData.totalClients + dashboardData.totalDrivers + dashboardData.totalMechanics }}</p>
+    </div>
+
+    <div class="card admins">
+      <span class="material-icons icon">admin_panel_settings</span>
+      <h3>Admins</h3>
+      <p>{{ dashboardData.totalAdmins }}</p>
+    </div>
+
+    <div class="card clients">
+      <span class="material-icons icon">person</span>
+      <h3>Clients</h3>
+      <p>{{ dashboardData.totalClients }}</p>
+    </div>
+
+    <div class="card drivers">
+      <span class="material-icons icon">commute</span>
+      <h3>Drivers</h3>
+      <p>{{ dashboardData.totalDrivers }}</p>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<div class="container">
+  <h2>Register</h2>
+
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <input type="text" placeholder="First Name" formControlName="firstName">
+    <input type="text" placeholder="Last Name" formControlName="lastName">
+    <input type="email" placeholder="Email" formControlName="email">
+    <input type="password" placeholder="Password" formControlName="password">
+
+    <select formControlName="role">
+      <option value="DRIVER">Driver</option>
+      <option value="CLIENT">Client</option>
+      <option value="ADMIN">Admin</option>
+    </select>
+
+    <button type="submit" [disabled]="!registerForm.valid">Register</button>
+  </form>
+
+  <p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
+  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+
+  <p>Already have an account? <a routerLink="/login">Login</a></p>
+</div>

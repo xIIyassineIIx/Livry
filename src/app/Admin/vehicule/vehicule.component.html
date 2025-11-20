@@ -1,0 +1,79 @@
+<div class="main-container">
+    <h2>Gestion des Véhicules</h2>
+
+<form [formGroup]="vehicleForm" (ngSubmit)="submitForm()">
+  <input formControlName="brand" placeholder="Brand">
+  <input formControlName="model" placeholder="Model">
+  <input formControlName="plateNumber" placeholder="Plate Number">
+  <button type="submit"> Ajouter</button>
+  <button type="button" (click)="resetForm()">Annuler</button>
+</form>
+
+<hr>
+
+<table class="vehicle-table">
+  <thead>
+    <tr>
+      <th>Marque</th>
+      <th>Modèle</th>
+      <th>Immatriculation</th>
+      <th>État</th>
+      <th>Chauffeur</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let v of vehicles">
+      <td>{{ v.brand }}</td>
+      <td>{{ v.model }}</td>
+      <td>{{ v.plateNumber }}</td>
+      <td>{{ v.status }}</td>
+      <td>{{ v.driver?.id || 'not assigned' }}</td>
+      <td>
+        <button (click)="openEditPopup(v)">Modifier</button>
+        <button (click)="openAssignPopup(v)">Assign Driver</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- popup -->
+<div class="popup" *ngIf="showPopup">
+  <div class="popup-content">
+    <h3>Modifier le véhicule</h3>
+    <form [formGroup]="editForm" (ngSubmit)="updateVehicle()">
+      <input formControlName="brand" placeholder="Marque">
+      <input formControlName="model" placeholder="Modèle">
+      <input formControlName="plateNumber" placeholder="Immatriculation">
+      <select formControlName="status">
+        <option value="AVAILABLE">Disponible</option>
+        <option value="ASSIGNED">Assigné</option>
+        <option value="MAINTENANCE">En maintenance</option>
+      </select>
+      <button type="submit">Sauvegarder</button>
+      <button type="button" (click)="closePopup()">Annuler</button>
+    </form>
+  </div>
+</div>
+
+<!-- assign popup -->
+ <div *ngIf="showAssignPopup" class="popup">
+  <div class="popup-content">
+    <h3>Assign Driver</h3>
+    <form [formGroup]="assignForm" (ngSubmit)="assignDriver()">
+      <label for="driver">Select Driver:</label>
+      <select formControlName="driverId" required>
+        <option value="" disabled selected>Select driver</option>
+        <option *ngFor="let d of drivers" [value]="d.id">
+          {{ d.firstName }} ({{ d.email }})
+        </option>
+      </select>
+
+      <div class="actions">
+        <button type="submit" [disabled]="assignForm.invalid">Assign</button>
+        <button type="button" (click)="closeAssignPopup()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+</div>

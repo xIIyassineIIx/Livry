@@ -1,0 +1,21 @@
+<span class="sidebar">
+    <div class="profile">
+        <img src="Profileimage.jpg" alt="">
+        <span class="Client-Name">{{user?.firstName}} {{user?.lastName}}</span> 
+    </div>
+    <hr style="width: 100%;margin-bottom: 2rem;">
+    <nav>
+        <a routerLink="/admin/dashboard" class="menu-item">
+            <i class="icon">📊</i>
+            <span>Dashboard</span>
+        </a>
+        <a routerLink="/admin/users" class="menu-item active">
+            <i class="icon">👥</i>
+            <span>Users</span>
+        </a>
+        <a routerLink="/admin/vehicles" class="menu-item">
+            <i class="icon">🚚</i>
+            <span>Vehicles</span>
+        </a>
+    </nav>
+</span> 

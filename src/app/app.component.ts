@@ -12,4 +12,5 @@ import { ClientMenuComponent } from "./Client/client-menu/client-menu.component"
 })
 export class AppComponent {
   title = 'Livry';
+  
 }

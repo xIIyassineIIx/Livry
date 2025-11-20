@@ -1,0 +1,19 @@
+<div class="report-container">
+  <h2>🚨 Signaler un Problème</h2>
+
+  <form [formGroup]="problemForm" (ngSubmit)="submitProblem()">
+    <label>Type de problème</label>
+    <select formControlName="type">
+      <option value="">-- Sélectionner --</option>
+      <option *ngFor="let t of problemTypes" [value]="t">{{ t }}</option>
+    </select>
+
+    <label>Description</label>
+    <textarea formControlName="description" placeholder="Décrivez le problème..."></textarea>
+
+    <label>ID Livraison</label>
+    <input formControlName="deliveryId" type="number" placeholder="Ex: 12">
+
+    <button type="submit" [disabled]="problemForm.invalid">Envoyer</button>
+  </form>
+</div>

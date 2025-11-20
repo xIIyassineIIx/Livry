@@ -6,51 +6,76 @@ import { LivraisonService } from '../../services/livraison.service';
 @Component({
   selector: 'app-afficher-livraisons',
   standalone: true,
-  imports: [DatePipe,CommonModule],
+  imports: [CommonModule],
   templateUrl: './afficher-livraisons.component.html',
-  styleUrl: './afficher-livraisons.component.css'
+  styleUrls: ['./afficher-livraisons.component.css']
 })
 export class AfficherLivraisonsComponent implements OnInit{
-   chauffeurId = 1; 
-  livraisonsDisponibles: Livraison[] = [];
-  mesLivraisons: Livraison[] = [];
+  myLivraisons: Livraison[] = [];
+  chauffeurId!: number;
 
   constructor(private livraisonService: LivraisonService) {}
 
   ngOnInit(): void {
-    this.chargerLivraisonsDisponibles();
-    this.chargerMesLivraisons();
+    const storedId = localStorage.getItem('userId');
+    if (!storedId) {
+      alert('Veuillez vous connecter.');
+      return;
+    }
+    this.chauffeurId = +storedId;
+    console.log('Chauffeur ID:', this.chauffeurId);
+
+    this.loadMyLivraisons();
+    console.log(this.myLivraisons);
   }
 
-  chargerLivraisonsDisponibles() {
+  loadMyLivraisons() {
+      if (!navigator.geolocation) {
+        alert('Géolocalisation non supportée par ce navigateur.');
+        return;
+      }
 
-    this.livraisonService.getAvailableLivraisons('Tunis', 36.8065, 10.1815)
-      .subscribe({
-        next: (res) => this.livraisonsDisponibles = res,
-        error: (err) => console.error(err)
-      });
-  }
-
-  chargerMesLivraisons() {
-    this.livraisonService.getMyLivraisons(this.chauffeurId)
-      .subscribe({
-        next: (res) => this.mesLivraisons = res,
-        error: (err) => console.error(err)
-      });
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const latitude = position.coords.latitude;
+          const  longitude = position.coords.longitude;
+          this.livraisonService.getAvailableLivraisons(latitude, longitude).subscribe({
+            next: (res) =>{ this.myLivraisons = res,console.log(longitude, latitude);},
+            error: (err) => console.error(err)
+          });
+        },
+        (err) => {
+          console.error('Erreur lors de la récupération de la position :', err);
+          alert('Impossible de récupérer la position actuelle.');
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    
   }
 
   accepterLivraison(livraisonId: number) {
-    this.livraisonService.acceptLivraison(livraisonId, this.chauffeurId)
-      .subscribe({
-        next: (res) => {
-          alert('Livraison acceptée !');
-          this.chargerLivraisonsDisponibles();
-          this.chargerMesLivraisons();
-        },
-        error: (err) => {
-          console.error(err);
-          alert('Erreur lors de l\'acceptation de la livraison.');
-        }
-      });
+    this.livraisonService.acceptLivraison(livraisonId, this.chauffeurId).subscribe({
+      next: () => {
+        alert('Livraison acceptée !');
+        this.loadMyLivraisons();
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Erreur lors de l\'acceptation de la livraison.');
+      }
+    });
+  }
+
+  updateStatus(livraison: Livraison, status: string) {
+    this.livraisonService.updateLivraisonStatus(livraison.id!, this.chauffeurId, status).subscribe({
+      next: () => {
+        alert('Statut mis à jour !');
+        this.loadMyLivraisons();
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Erreur lors de la mise à jour du statut.');
+      }
+    });
   }
 }
