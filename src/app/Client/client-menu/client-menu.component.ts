@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {  RouterModule } from '@angular/router';
-
+import { Router, RouterModule } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-client-menu',
@@ -10,5 +10,13 @@ import {  RouterModule } from '@angular/router';
   styleUrl: './client-menu.component.css'
 })
 export class ClientMenuComponent {
+  constructor(
+    private userService: UserService,
+    private router: Router
+  ) {}
 
+  logout(): void {
+    this.userService.logout();
+    this.router.navigate(['/login']);
+  }
 }

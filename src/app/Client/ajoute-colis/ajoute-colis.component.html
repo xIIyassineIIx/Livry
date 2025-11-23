@@ -1,23 +1,79 @@
 <div class="form-section">
   <h2>Ajouter une livraison</h2>
 
-  <label for="depart">Adresse de départ :</label>
-  <input id="depart" type="text" [(ngModel)]="livraison.depart" placeholder="Ex : Rue de départ">
+  <form (ngSubmit)="ajouterLivraison()" #deliveryForm="ngForm">
+    <label for="description">Description du colis</label>
+    <input
+      id="description"
+      type="text"
+      name="description"
+      [(ngModel)]="formData.description"
+      placeholder="Référence, informations importantes..."
+      required
+    />
 
-  <label for="arrivee">Adresse d'arrivée :</label>
-  <input id="arrivee" type="text" [(ngModel)]="livraison.arrivee" placeholder="Ex : Rue d'arrivée">
+    <label for="type">Type de livraison</label>
+    <select id="type" name="type" [(ngModel)]="formData.type" required>
+      <option *ngFor="let type of deliveryTypes" [value]="type">{{ type }}</option>
+    </select>
 
-  <label for="details">Détails :</label>
-  <textarea id="details" [(ngModel)]="livraison.details" placeholder="Ex : fragile, alimentaire…"></textarea>
+    <div class="address-section">
+      <h3>Adresse de départ</h3>
+      <input
+        type="text"
+        name="departureStreet"
+        placeholder="Rue"
+        [(ngModel)]="formData.departureAddress.street"
+        required
+      />
+      <input
+        type="text"
+        name="departureCity"
+        placeholder="Ville"
+        [(ngModel)]="formData.departureAddress.city"
+        required
+      />
+      <input
+        type="text"
+        name="departurePostalCode"
+        placeholder="Code postal"
+        [(ngModel)]="formData.departureAddress.postalCode"
+      />
+      <select name="departureRegion" [(ngModel)]="formData.departureAddress.region" required>
+        <option *ngFor="let region of regions" [value]="region">{{ region }}</option>
+      </select>
+    </div>
 
-  <label for="type">Type de livraison :</label>
-  <select id="type" [(ngModel)]="livraison.type">
-    <option value="">-- Sélectionner un type --</option>
-    <option value="DOCUMENT">Document</option>
-    <option value="FOOD">Alimentaire</option>
-    <option value="FRAGILE">Fragile</option>
-    <option value="OTHER">Autre</option>
-  </select>
+    <div class="address-section">
+      <h3>Adresse d'arrivée</h3>
+      <input
+        type="text"
+        name="arrivalStreet"
+        placeholder="Rue"
+        [(ngModel)]="formData.arrivalAddress.street"
+        required
+      />
+      <input
+        type="text"
+        name="arrivalCity"
+        placeholder="Ville"
+        [(ngModel)]="formData.arrivalAddress.city"
+        required
+      />
+      <input
+        type="text"
+        name="arrivalPostalCode"
+        placeholder="Code postal"
+        [(ngModel)]="formData.arrivalAddress.postalCode"
+      />
+      <select name="arrivalRegion" [(ngModel)]="formData.arrivalAddress.region" required>
+        <option *ngFor="let region of regions" [value]="region">{{ region }}</option>
+      </select>
+    </div>
 
-  <button (click)="ajouterLivraison()">Ajouter</button>
+    <button type="submit" [disabled]="deliveryForm.invalid">Ajouter</button>
+  </form>
+
+  <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 </div>

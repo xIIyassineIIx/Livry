@@ -1,49 +1,126 @@
 <div class="dashboard-container">
-  <h1>Tableau de bord</h1>
+  <h2>Tableau de bord - Administrateur</h2>
 
-  <div class="kpi-cards">
-
-    <div class="card total-deliveries">
-      <span class="material-icons icon">local_shipping</span>
-      <h3>Total Livraisons</h3>
-      <p>{{ dashboardData.totalDeliveries }}</p>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalDeliveries }}</h3>
+        <p>Total livraisons</p>
+      </div>
     </div>
 
-    <div class="card pending-deliveries">
-      <span class="material-icons icon">update</span>
-      <h3>Livraisons en cours</h3>
-      <p>{{ dashboardData.pending }}</p>
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.pending }}</h3>
+        <p>En attente</p>
+      </div>
     </div>
 
-    <div class="card delivered">
-      <span class="material-icons icon">check_circle</span>
-      <h3>Livraisons terminées</h3>
-      <p>{{ dashboardData.delivered }}</p>
+    <div class="stat-card">
+      <div class="stat-icon">🚚</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.ongoingDeliveries }}</h3>
+        <p>En cours</p>
+      </div>
     </div>
 
-    <div class="card total-users">
-      <span class="material-icons icon">group</span>
-      <h3>Total Users</h3>
-      <p>{{ dashboardData.totalClients + dashboardData.totalDrivers + dashboardData.totalMechanics }}</p>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.delivered }}</h3>
+        <p>Livrées</p>
+      </div>
     </div>
 
-    <div class="card admins">
-      <span class="material-icons icon">admin_panel_settings</span>
-      <h3>Admins</h3>
-      <p>{{ dashboardData.totalAdmins }}</p>
+    <div class="stat-card">
+      <div class="stat-icon">📤</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.deliveriesInTransfer }}</h3>
+        <p>En transfert</p>
+      </div>
     </div>
 
-    <div class="card clients">
-      <span class="material-icons icon">person</span>
-      <h3>Clients</h3>
-      <p>{{ dashboardData.totalClients }}</p>
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalClients + dashboardData.totalDrivers + dashboardData.totalMechanics + dashboardData.totalAdmins }}</h3>
+        <p>Total utilisateurs</p>
+      </div>
     </div>
 
-    <div class="card drivers">
-      <span class="material-icons icon">commute</span>
-      <h3>Drivers</h3>
-      <p>{{ dashboardData.totalDrivers }}</p>
+    <div class="stat-card">
+      <div class="stat-icon">🛡️</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalAdmins }}</h3>
+        <p>Admins</p>
+      </div>
     </div>
 
+    <div class="stat-card">
+      <div class="stat-icon">👨‍💼</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalClients }}</h3>
+        <p>Clients</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🚗</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalDrivers }}</h3>
+        <p>Chauffeurs</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🔧</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalMechanics }}</h3>
+        <p>Mécaniciens</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🚚</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.availableVehicles }}</h3>
+        <p>Véhicules disponibles</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🔴</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.busyVehicles }}</h3>
+        <p>Véhicules occupés</p>
+        <small>{{ dashboardData.percentageVehiclesBusy | number : '1.0-0' }}%</small>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">⚠️</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalProblems }}</h3>
+        <p>Problèmes signalés</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🔧</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalInterventions }}</h3>
+        <p>Interventions</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🏢</div>
+      <div class="stat-info">
+        <h3>{{ dashboardData.totalStations }}</h3>
+        <p>Stations actives</p>
+      </div>
+    </div>
   </div>
 </div>

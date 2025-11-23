@@ -1,0 +1,24 @@
+<span class="sidebar">
+  <div class="profile">
+    <img src="Profileimage.jpg" alt="Profile">
+    <span class="mechanic-name">{{ userName }}</span>
+  </div>
+  <hr style="width: 100%; margin-bottom: 2rem;">
+  <nav>
+    <a routerLink="/mechanic/dashboard" routerLinkActive="active" class="menu-item">
+      <i class="icon">📊</i>
+      <span>Tableau de bord</span>
+    </a>
+    <a routerLink="/mechanic/interventions" routerLinkActive="active" class="menu-item">
+      <i class="icon">🔧</i>
+      <span>Mes interventions</span>
+    </a>
+  </nav>
+  <div class="logout-section">
+    <button class="logout-btn" (click)="logout()">
+      <i class="icon">🚪</i>
+      <span>Déconnexion</span>
+    </button>
+  </div>
+</span>
+

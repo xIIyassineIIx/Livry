@@ -19,6 +19,7 @@ export class VehiculeComponent implements OnInit {
   assignForm: FormGroup;
   vehicles: Vehicule[] = [];
   drivers: User[] = [];
+  vehicleStatuses = Object.values(VehicleStatus);
   editingVehicle?: Vehicule;
   assigningVehicle?: Vehicule;
   showPopup = false;
@@ -123,8 +124,7 @@ openAssignPopup(vehicle: Vehicule): void {
 
 
   resetForm() {
-    
-    this.vehicleForm.reset({ status: VehicleStatus.AVAILABLE });
+    this.vehicleForm.reset();
   }
 
   // deleteVehicle(vehicle: Vehicule) {

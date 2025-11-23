@@ -2,18 +2,66 @@
   <h2>🚨 Signaler un Problème</h2>
 
   <form [formGroup]="problemForm" (ngSubmit)="submitProblem()">
-    <label>Type de problème</label>
-    <select formControlName="type">
-      <option value="">-- Sélectionner --</option>
-      <option *ngFor="let t of problemTypes" [value]="t">{{ t }}</option>
-    </select>
+    <div class="form-group">
+      <label for="deliveryId">Livraison *</label>
+      <select 
+        id="deliveryId"
+        formControlName="deliveryId"
+        [disabled]="loadingDeliveries">
+        <option value="">-- Sélectionner une livraison --</option>
+        <option *ngFor="let delivery of myDeliveries" [value]="delivery.id">
+          {{ getDeliveryDescription(delivery) }}
+        </option>
+      </select>
+      <small *ngIf="currentRole === 'DRIVER' && !loadingDeliveries && myDeliveries.length === 0" class="help-text">
+        Aucune livraison active disponible. Vous ne pouvez signaler un problème que pour vos livraisons en cours.
+      </small>
+      <small *ngIf="loadingDeliveries" class="help-text">Chargement des livraisons...</small>
+      <small *ngIf="currentRole === 'CLIENT'" class="help-text">
+        Entrez l'ID de la livraison concernée
+      </small>
+    </div>
 
-    <label>Description</label>
-    <textarea formControlName="description" placeholder="Décrivez le problème..."></textarea>
+    <div class="form-group" *ngIf="currentRole === 'CLIENT'">
+      <label for="deliveryIdInput">ID Livraison *</label>
+      <input 
+        id="deliveryIdInput"
+        formControlName="deliveryId" 
+        type="number" 
+        placeholder="Ex: 12">
+    </div>
 
-    <label>ID Livraison</label>
-    <input formControlName="deliveryId" type="number" placeholder="Ex: 12">
+    <div class="form-group">
+      <label for="type">Type de problème *</label>
+      <select id="type" formControlName="type">
+        <option value="">-- Sélectionner un type --</option>
+        <option *ngFor="let t of problemTypes" [value]="t">
+          {{ getTypeLabel(t) }}
+        </option>
+      </select>
+    </div>
 
-    <button type="submit" [disabled]="problemForm.invalid">Envoyer</button>
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea 
+        id="description"
+        formControlName="description" 
+        placeholder="Décrivez le problème en détail (minimum 10 caractères)..."
+        rows="5"></textarea>
+      <small class="help-text">
+        Minimum 10 caractères requis. Soyez aussi précis que possible.
+      </small>
+    </div>
+
+    <button 
+      type="submit" 
+      [disabled]="problemForm.invalid || loading"
+      class="submit-btn">
+      <span *ngIf="!loading">🚨 Envoyer le signalement</span>
+      <span *ngIf="loading">Envoi en cours...</span>
+    </button>
   </form>
+
+  <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
 </div>

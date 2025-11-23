@@ -1,16 +1,38 @@
-export class Livraison {
-    constructor(
-        public chauffeurId: number,
-        public clientId: number,
-        public depart: string,
-        public arrivee: string,
-        public gouvernoratDepart: string,
-        public gouvernoratArrivee: string,
-        public latitudeDepart: number,
-        public longitudeDepart: number,
-        public details: string,
-        public status: string,
-        public type: string,
-        public id?: number,
-    ) {}
+import { Address } from './address';
+import { Region } from './region';
+import { User } from './user';
+
+export enum DeliveryStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  IN_TRANSIT = 'IN_TRANSIT',
+  DRIVER_TRANSFER = 'DRIVER_TRANSFER',
+  DELIVERED = 'DELIVERED',
+  CANCELED = 'CANCELED'
+}
+
+export enum DeliveryType {
+  DOCUMENT = 'DOCUMENT',
+  FRAGILE = 'FRAGILE',
+  FOOD = 'FOOD',
+  OTHER = 'OTHER'
+}
+
+export interface StationSummary {
+  id?: number;
+  name?: string;
+  region?: Region;
+}
+
+export interface Livraison {
+  id?: number;
+  description: string;
+  type: DeliveryType;
+  status?: DeliveryStatus;
+  client?: User;
+  driver?: User | null;
+  station?: StationSummary | null;
+  departureAddress: Address;
+  arrivalAddress: Address;
+  createdAt?: string;
 }

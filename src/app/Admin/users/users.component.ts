@@ -1,22 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { User, UserRole } from '../../models/user';
-import { AdminService } from '../../services/admin.service';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import emailjs from '@emailjs/browser';
+import { Region } from '../../models/region';
+import { User, UserRole } from '../../models/user';
+import { AdminService, CreateUserPayload } from '../../services/admin.service';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [FormsModule,CommonModule ],
+  imports: [FormsModule, CommonModule],
   templateUrl: './users.component.html',
   styleUrl: './users.component.css'
 })
-export class UsersComponent  implements OnInit{
-users: User[] = [];
+export class UsersComponent implements OnInit {
+  users: User[] = [];
   roles: UserRole[] = ['DRIVER', 'CLIENT', 'MECHANIC', 'ADMIN'];
+  regions = Object.values(Region);
   editingUserId: number | null = null;
   selectedRole: UserRole | null = null;
+
+  user: Partial<User> = {
+    firstName: '',
+    lastName: '',
+    email: '',
+    role: 'CLIENT',
+    region: Region.TUNIS,
+    longitude: null,
+    latitude: null
+  };
+
+  successMessage = '';
+  errorMessage = '';
 
   constructor(private adminService: AdminService) {}
 
@@ -24,94 +39,103 @@ users: User[] = [];
     this.loadUsers();
   }
 
-  loadUsers() {
-    this.adminService.getUsers().subscribe(data => this.users = data);
+  loadUsers(): void {
+    this.adminService.getUsers().subscribe((data) => (this.users = data));
   }
 
-  startEdit(user: User) {
-    this.editingUserId = user.id!;
+  startEdit(user: User): void {
+    this.editingUserId = user.id ?? null;
     this.selectedRole = user.role;
   }
 
-  saveRole(user: User) {
-    if (!this.selectedRole || this.selectedRole === user.role) {
+  saveRole(user: User): void {
+    if (!this.selectedRole || !user.id || this.selectedRole === user.role) {
       this.cancelEdit();
       return;
     }
 
-    this.adminService.updateUser(user.id!, { role: this.selectedRole }).subscribe(updated => {
+    this.adminService.updateUserRole(user.id, this.selectedRole).subscribe((updated) => {
       user.role = updated.role;
       this.cancelEdit();
     });
   }
 
-  cancelEdit() {
+  cancelEdit(): void {
     this.editingUserId = null;
     this.selectedRole = null;
   }
 
-  deleteUser(user: User) {
+  deleteUser(user: User): void {
+    if (!user.id) {
+      return;
+    }
     if (confirm(`Supprimer ${user.firstName} ${user.lastName} ?`)) {
-      this.adminService.deleteUser(user.id!).subscribe(() => {
-        this.users = this.users.filter(u => u.id !== user.id);
+      this.adminService.deleteUser(user.id).subscribe(() => {
+        this.users = this.users.filter((u) => u.id !== user.id);
       });
     }
   }
 
-
-//emailsender
-
-  
-  user: Partial<User> = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    role: 'CLIENT',
-  };
-
-  successMessage = '';
-  errorMessage = '';
-
+  getInitials(user: User): string {
+    if (!user.firstName || !user.lastName) {
+      return '??';
+    }
+    return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+  }
 
   generatePassword(length: number = 10): string {
     const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%';
     return Array.from({ length }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
   }
 
-  addUser() {
-    // 🧠 Generate a random password on the frontend
-    const generatedPassword = this.generatePassword();
-    const newUser = { ...this.user, password: generatedPassword };
+  addUser(): void {
+    if (!this.user.firstName || !this.user.lastName || !this.user.email || !this.user.role) {
+      this.errorMessage = 'Tous les champs sont obligatoires.';
+      return;
+    }
 
-    // 📨 Send email to the user before saving
+    const generatedPassword = this.generatePassword();
+    const payload: CreateUserPayload = {
+      firstName: this.user.firstName ?? '',
+      lastName: this.user.lastName ?? '',
+      email: this.user.email ?? '',
+      role: this.user.role ?? 'CLIENT',
+      password: generatedPassword,
+      region: this.user.region ?? null,
+      longitude: this.user.longitude ?? null,
+      latitude: this.user.latitude ?? null
+    };
+
     const templateParams = {
       to_name: this.user.firstName,
       to_email: this.user.email,
-      message: `Bonjour ${this.user.firstName},\n\nVotre compte Livry a été créé avec succès.\n\nIdentifiant : ${this.user.email}\nMot de passe : ${generatedPassword}\n\nCordialement,\nL'équipe Livry`
+      message: `Bonjour ${this.user.firstName},
+
+Votre compte Livry a été créé avec succès.
+Identifiant : ${this.user.email}
+Mot de passe : ${generatedPassword}
+
+Cordialement,
+L'équipe Livry`
     };
 
-    emailjs.send(
-      'service_julqdyl',    // Replace with your EmailJS service ID
-      'template_ekqjq0u',   // Replace with your EmailJS template ID
-      templateParams,
-      'RXHSzTygkeqR67wc4'     // Replace with your EmailJS public key
-    ).then(() => {
-      // 💾 Save user after email sent successfully
-      this.adminService.createUser(newUser as User).subscribe({
-        next: () => {
-          this.successMessage = 'Utilisateur créé et email envoyé ✅';
-          this.loadUsers();
-          this.errorMessage = '';
-          this.user = { firstName: '', lastName: '', email: '', role: 'CLIENT' };
-        },
-        error: () => {
-          this.errorMessage = 'Erreur lors de l’enregistrement.';
-        }
+    emailjs
+      .send('service_julqdyl', 'template_ekqjq0u', templateParams, 'RXHSzTygkeqR67wc4')
+      .then(() => {
+        this.adminService.createUser(payload).subscribe({
+          next: () => {
+            this.successMessage = 'Utilisateur créé et email envoyé ✅';
+            this.errorMessage = '';
+            this.loadUsers();
+            this.user = { firstName: '', lastName: '', email: '', role: 'CLIENT', region: Region.TUNIS, longitude: null, latitude: null };
+          },
+          error: () => {
+            this.errorMessage = 'Erreur lors de la création du compte.';
+          }
+        });
+      })
+      .catch(() => {
+        this.errorMessage = 'Erreur lors de l’envoi de l’email.';
       });
-    }).catch(() => {
-      this.errorMessage = 'Erreur lors de l’envoi de l’email.';
-    });
   }
-
-
 }

@@ -1,0 +1,101 @@
+<div class="main-container">
+  <h2>Gestion des interventions</h2>
+
+  <div class="content-wrapper">
+    <div class="interventions-table card">
+      <div class="card-header">
+        <h3>Interventions non assignées</h3>
+        <button class="btn-add" (click)="toggleCreateForm()">
+          {{ showCreateForm ? 'Annuler' : '+ Créer' }}
+        </button>
+      </div>
+
+      <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <table *ngIf="unassignedInterventions.length > 0; else noInterventions">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Station</th>
+            <th>Description</th>
+            <th>Statut</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let intervention of unassignedInterventions">
+            <td>{{ intervention.id }}</td>
+            <td>{{ intervention.station?.name }} - {{ intervention.station?.region }}</td>
+            <td>{{ intervention.descriptionRequest }}</td>
+            <td>
+              <span class="status-badge" [class]="'status-' + intervention.status?.toLowerCase()">
+                {{ intervention.status }}
+              </span>
+            </td>
+            <td>{{ intervention.createdAt | date:'short' }}</td>
+            <td>
+              <button class="btn-assign" (click)="openAssignForm(intervention)">Assigner</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #noInterventions>
+        <p class="no-data">Aucune intervention non assignée</p>
+      </ng-template>
+    </div>
+
+    <div class="form-card card" *ngIf="showCreateForm">
+      <h3>Nouvelle intervention</h3>
+      <form (ngSubmit)="createIntervention()">
+        <select [(ngModel)]="interventionForm.stationId" name="stationId" required>
+          <option [value]="0">-- Sélectionner une station --</option>
+          <option *ngFor="let station of stations" [value]="station.id">
+            {{ station.name }} - {{ station.region }}
+          </option>
+        </select>
+
+        <select [(ngModel)]="interventionForm.mechanicId" name="mechanicId">
+          <option [ngValue]="null">-- Mécanicien (optionnel) --</option>
+          <option *ngFor="let mechanic of mechanics" [ngValue]="mechanic.id">
+            {{ mechanic.firstName }} {{ mechanic.lastName }}
+          </option>
+        </select>
+
+        <textarea 
+          placeholder="Description de l'intervention" 
+          [(ngModel)]="interventionForm.description" 
+          name="description" 
+          rows="4"
+          required></textarea>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Créer</button>
+          <button type="button" class="btn-secondary" (click)="toggleCreateForm()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Assign Popup -->
+  <div class="popup" *ngIf="showAssignForm">
+    <div class="popup-content">
+      <h3>Assigner un mécanicien</h3>
+      <p><strong>Station:</strong> {{ selectedIntervention?.station?.name }}</p>
+      <p><strong>Description:</strong> {{ selectedIntervention?.descriptionRequest }}</p>
+      
+      <select [(ngModel)]="selectedMechanicId" name="mechanicId" required>
+        <option [value]="0">-- Sélectionner un mécanicien --</option>
+        <option *ngFor="let mechanic of mechanics" [value]="mechanic.id">
+          {{ mechanic.firstName }} {{ mechanic.lastName }}
+        </option>
+      </select>
+
+      <div class="popup-actions">
+        <button class="btn-primary" (click)="assignMechanic(selectedMechanicId)" [disabled]="!selectedMechanicId || selectedMechanicId === 0">Assigner</button>
+        <button class="btn-secondary" (click)="cancelAssign()">Annuler</button>
+      </div>
+    </div>
+  </div>
+</div>

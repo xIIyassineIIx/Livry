@@ -1,33 +1,89 @@
 <div class="main-container">
-<div class="driver-dashboard">
-  <h1>Mes Livraisons</h1>
+  <div class="driver-dashboard">
+    <div class="header-section">
+      <h1>Livraisons disponibles</h1>
+      <p class="region-badge">Région: {{ chauffeurRegion }}</p>
+    </div>
 
-  <table class="livraison-table">
-    <thead>
-      <tr>
-        <th>Départ</th>
-        <th>Arrivée</th>
-        <th>Détails</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let livraison of myLivraisons">
-        <td>{{ livraison.depart }}</td>
-        <td>{{ livraison.arrivee }}</td>
-        <td>{{ livraison.details }}</td>
-        <td>{{ livraison.type }}</td>
-        <td>{{ livraison.status }}</td>
-        <td>
-          <button *ngIf="livraison.status === 'PENDING'" (click)="accepterLivraison(livraison.id!)">Accepter</button>
-          <button *ngIf="livraison.status === 'ACCEPTED'" (click)="updateStatus(livraison, 'DELIVERED')">Livré</button>
-          <button *ngIf="livraison.status === 'ACCEPTED'" (click)="updateStatus(livraison, 'CANCELED')">Annuler</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+    <div class="filters-section">
+      <input 
+        type="text" 
+        placeholder="Rechercher par description, ville..." 
+        class="search-input"
+        [(ngModel)]="searchTerm"
+        (input)="applyFilters()" />
+      
+      <select [(ngModel)]="typeFilter" (change)="applyFilters()" class="type-filter">
+        <option value="ALL">Tous les types</option>
+        <option [value]="DeliveryType.DOCUMENT">Document</option>
+        <option [value]="DeliveryType.FRAGILE">Fragile</option>
+        <option [value]="DeliveryType.FOOD">Nourriture</option>
+        <option [value]="DeliveryType.OTHER">Autre</option>
+      </select>
+    </div>
 
+    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="loading" *ngIf="loading">Chargement des livraisons...</div>
+
+    <div class="deliveries-grid" *ngIf="!loading && filteredDeliveries.length > 0">
+      <div class="delivery-card" *ngFor="let livraison of filteredDeliveries">
+        <div class="card-header">
+          <span class="delivery-id">#{{ livraison.id }}</span>
+          <span class="type-badge type-{{ livraison.type.toLowerCase() }}">
+            {{ getTypeLabel(livraison.type) }}
+          </span>
+        </div>
+
+        <div class="card-body">
+          <p class="description">{{ livraison.description }}</p>
+          
+          <div class="route-info">
+            <div class="route-item">
+              <span class="route-label">📍 Départ:</span>
+              <span class="route-value">
+                {{ livraison.departureAddress.street }}, {{ livraison.departureAddress.city }}
+                <br>
+                <small>{{ livraison.departureAddress.region }}</small>
+              </span>
+            </div>
+            
+            <div class="route-arrow">→</div>
+            
+            <div class="route-item">
+              <span class="route-label">🎯 Arrivée:</span>
+              <span class="route-value">
+                {{ livraison.arrivalAddress.street }}, {{ livraison.arrivalAddress.city }}
+                <br>
+                <small>{{ livraison.arrivalAddress.region }}</small>
+              </span>
+            </div>
+          </div>
+
+          <div class="delivery-meta">
+            <span class="meta-item">
+              <strong>Créée le:</strong> {{ formatDate(livraison.createdAt) }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn-accept" (click)="accepterLivraison(livraison.id!)">
+            ✅ Accepter la livraison
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="empty-state" *ngIf="!loading && filteredDeliveries.length === 0">
+      <div class="empty-content">
+        <p *ngIf="deliveries.length === 0" class="empty-message">
+          Aucune livraison disponible dans votre région pour le moment.
+        </p>
+        <p *ngIf="deliveries.length > 0 && filteredDeliveries.length === 0" class="empty-message">
+          Aucune livraison ne correspond à vos critères de recherche.
+        </p>
+      </div>
+    </div>
+  </div>
 </div>

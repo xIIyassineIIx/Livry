@@ -1,21 +1,18 @@
-import { User } from "./user";
+import { User } from './user';
+import { StationSummary } from './livraison';
 
 export enum VehicleStatus {
   AVAILABLE = 'AVAILABLE',
-  ASSIGNED = 'ASSIGNED',
-  MAINTENANCE = 'MAINTENANCE'
+  IN_USE = 'IN_USE',
+  UNDER_REPAIR = 'UNDER_REPAIR'
 }
 
-export class Vehicule {
-
-  constructor(
-    public brand: string,
-    public model: string,
-    public plateNumber: string,
-    public status: VehicleStatus,
-    public driver?: Partial<User>,
-    public id?: number
-  ) {
-
-  }
+export interface Vehicule {
+  id?: number;
+  brand: string;
+  model: string;
+  plateNumber: string;
+  status: VehicleStatus;
+  driver?: Partial<User> | null;
+  station?: StationSummary | null;
 }

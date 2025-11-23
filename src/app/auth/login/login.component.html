@@ -1,11 +1,68 @@
-<div class="container">
-  <h2>Login</h2>
+<div class="login-container">
+  <div class="login-wrapper">
+    <div class="login-left">
+      <div class="brand-section">
+        <h1 class="brand-title">Livry</h1>
+        <p class="brand-subtitle">Votre partenaire de confiance pour la livraison</p>
+      </div>
+      <div class="illustration">
+        <div class="illustration-item">🚚</div>
+        <div class="illustration-item">📦</div>
+        <div class="illustration-item">✅</div>
+      </div>
+    </div>
+    
+    <div class="login-right">
+      <div class="login-card">
+        <h2 class="login-title">Connexion</h2>
+        <p class="login-subtitle">Connectez-vous à votre compte</p>
 
-  <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
-    <input type="email" placeholder="Email" formControlName="email">
-    <input type="password" placeholder="Password" formControlName="password">
-    <button type="submit" [disabled]="!loginForm.valid">Login</button>
-  </form>
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="login-form">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email"
+              placeholder="votre@email.com" 
+              formControlName="email"
+              class="form-input"
+              [class.error]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            <span class="error-text" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+              Email invalide
+            </span>
+          </div>
 
-  <p>Don't have an account? <a routerLink="/register">Register</a></p>
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input 
+              type="password" 
+              id="password"
+              placeholder="••••••••" 
+              formControlName="password"
+              class="form-input"
+              [class.error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            <span class="error-text" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+              Mot de passe requis
+            </span>
+          </div>
+
+          <div class="error-message" *ngIf="errorMessage">
+            <span>⚠️</span> {{ errorMessage }}
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn-submit"
+            [disabled]="!loginForm.valid">
+            Se connecter
+          </button>
+        </form>
+
+        <div class="login-footer">
+          <p>Pas encore de compte ? <a routerLink="/register" class="link">Créer un compte</a></p>
+          <p class="home-link"><a routerLink="/" class="link">← Retour à l'accueil</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

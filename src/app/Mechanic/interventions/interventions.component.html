@@ -1,0 +1,140 @@
+<div class="main-container">
+  <div class="interventions-container">
+    <div class="header-section">
+      <h2>Mes interventions</h2>
+      <div class="filter-section">
+        <select [(ngModel)]="statusFilter" (change)="applyFilters()" class="status-filter">
+          <option value="ALL">Tous les statuts</option>
+          <option [value]="InterventionStatus.PENDING">En attente</option>
+          <option [value]="InterventionStatus.IN_PROGRESS">En cours</option>
+          <option [value]="InterventionStatus.COMPLETED">Terminées</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    <div class="loading" *ngIf="loading">Chargement...</div>
+
+    <div class="interventions-grid" *ngIf="!loading && filteredInterventions.length > 0">
+      <div class="intervention-card" *ngFor="let intervention of filteredInterventions">
+        <div class="card-header">
+          <span class="intervention-id">Intervention #{{ intervention.id }}</span>
+          <span class="status status-{{ getStatusClass(intervention.status) }}">
+            {{ getStatusLabel(intervention.status) }}
+          </span>
+        </div>
+
+        <div class="card-body">
+          <div class="description-section">
+            <h4>Description de la demande</h4>
+            <p>{{ intervention.descriptionRequest }}</p>
+          </div>
+
+          <div class="details-section">
+            <div class="detail-row" *ngIf="intervention.station">
+              <span class="detail-icon">📍</span>
+              <div class="detail-content">
+                <span class="detail-label">Station:</span>
+                <span class="detail-value">{{ intervention.station.name }} - {{ intervention.station.region }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row" *ngIf="intervention.vehicle">
+              <span class="detail-icon">🚚</span>
+              <div class="detail-content">
+                <span class="detail-label">Véhicule:</span>
+                <span class="detail-value">
+                  {{ intervention.vehicle.brand }} {{ intervention.vehicle.model }} 
+                  ({{ intervention.vehicle.plateNumber }})
+                </span>
+              </div>
+            </div>
+
+            <div class="detail-row" *ngIf="intervention.type">
+              <span class="detail-icon">🔧</span>
+              <div class="detail-content">
+                <span class="detail-label">Type:</span>
+                <span class="detail-value">{{ getTypeLabel(intervention.type) }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row">
+              <span class="detail-icon">📅</span>
+              <div class="detail-content">
+                <span class="detail-label">Créée le:</span>
+                <span class="detail-value">{{ formatDate(intervention.createdAt) }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row" *ngIf="intervention.completionDate">
+              <span class="detail-icon">✅</span>
+              <div class="detail-content">
+                <span class="detail-label">Terminée le:</span>
+                <span class="detail-value">{{ formatDate(intervention.completionDate) }}</span>
+              </div>
+            </div>
+
+            <div class="detail-row" *ngIf="intervention.descriptionDone">
+              <span class="detail-icon">📝</span>
+              <div class="detail-content">
+                <span class="detail-label">Travail effectué:</span>
+                <span class="detail-value">{{ intervention.descriptionDone }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer" *ngIf="intervention.status !== InterventionStatus.COMPLETED">
+          <button class="btn-complete" (click)="openCompleteForm(intervention)">
+            Compléter l'intervention
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-data" *ngIf="!loading && filteredInterventions.length === 0">
+      <p *ngIf="interventions.length === 0">
+        Aucune intervention assignée pour le moment.
+      </p>
+      <p *ngIf="interventions.length > 0 && filteredInterventions.length === 0">
+        Aucune intervention ne correspond au filtre sélectionné.
+      </p>
+    </div>
+
+    <div class="complete-popup" *ngIf="showCompleteForm">
+      <div class="popup-content">
+        <h3>Compléter l'intervention #{{ selectedIntervention?.id }}</h3>
+        
+        <div class="popup-info">
+          <p><strong>📍 Station:</strong> {{ selectedIntervention?.station?.name }}</p>
+          <p><strong>🚚 Véhicule:</strong> 
+            <span *ngIf="selectedIntervention?.vehicle">
+              {{ selectedIntervention?.vehicle?.brand }} {{ selectedIntervention?.vehicle?.model }}
+            </span>
+            <span *ngIf="!selectedIntervention?.vehicle">N/A</span>
+          </p>
+          <p><strong>📋 Description initiale:</strong></p>
+          <p class="description-text">{{ selectedIntervention?.descriptionRequest }}</p>
+        </div>
+        
+        <label for="completeDescription">Description du travail effectué *</label>
+        <textarea 
+          id="completeDescription"
+          placeholder="Décrivez le travail effectué, les pièces remplacées, les tests effectués, etc." 
+          [(ngModel)]="completeDescription" 
+          name="completeDescription" 
+          rows="6"
+          required></textarea>
+
+        <div class="form-actions">
+          <button class="btn-save" (click)="completeIntervention()" [disabled]="!completeDescription.trim()">
+            Compléter l'intervention
+          </button>
+          <button class="btn-cancel" (click)="cancelComplete()">Annuler</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

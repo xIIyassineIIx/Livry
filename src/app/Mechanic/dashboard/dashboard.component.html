@@ -1,0 +1,116 @@
+<div class="dashboard-container">
+  <h2>Tableau de bord - Mécanicien</h2>
+
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="loading" *ngIf="loading">Chargement...</div>
+
+  <div class="stats-grid" *ngIf="!loading">
+    <div class="stat-card">
+      <div class="stat-icon">🔧</div>
+      <div class="stat-info">
+        <h3>{{ stats.total }}</h3>
+        <p>Total interventions</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-info">
+        <h3>{{ stats.pending }}</h3>
+        <p>En attente</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">⚙️</div>
+      <div class="stat-info">
+        <h3>{{ stats.inProgress }}</h3>
+        <p>En cours</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3>{{ stats.completed }}</h3>
+        <p>Terminées</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-info">
+        <h3>{{ getCompletionRate() }}%</h3>
+        <p>Taux de complétion</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="recent-section" *ngIf="!loading">
+    <div class="section-header">
+      <h3>Interventions récentes</h3>
+      <a routerLink="/mechanic/interventions" class="view-all">Voir tout →</a>
+    </div>
+
+    <div class="recent-interventions" *ngIf="recentInterventions.length > 0; else noInterventions">
+      <div class="intervention-card" *ngFor="let intervention of recentInterventions">
+        <div class="intervention-header">
+          <span class="intervention-id">#{{ intervention.id }}</span>
+          <span class="status status-{{ getStatusClass(intervention.status) }}">
+            {{ getStatusLabel(intervention.status) }}
+          </span>
+        </div>
+        
+        <div class="intervention-body">
+          <p class="intervention-description">
+            <strong>Description:</strong> {{ intervention.descriptionRequest }}
+          </p>
+          
+          <div class="intervention-details">
+            <div class="detail-item" *ngIf="intervention.station">
+              <span class="detail-label">📍 Station:</span>
+              <span class="detail-value">{{ intervention.station.name }} - {{ intervention.station.region }}</span>
+            </div>
+            
+            <div class="detail-item" *ngIf="intervention.vehicle">
+              <span class="detail-label">🚚 Véhicule:</span>
+              <span class="detail-value">
+                {{ intervention.vehicle.brand }} {{ intervention.vehicle.model }} 
+                ({{ intervention.vehicle.plateNumber }})
+              </span>
+            </div>
+            
+            <div class="detail-item" *ngIf="intervention.type">
+              <span class="detail-label">🔧 Type:</span>
+              <span class="detail-value">{{ getTypeLabel(intervention.type) }}</span>
+            </div>
+          </div>
+          
+          <div class="intervention-footer">
+            <span class="date">Créée le: {{ formatDate(intervention.createdAt) }}</span>
+            <span class="completion-date" *ngIf="intervention.completionDate">
+              Terminée le: {{ formatDate(intervention.completionDate) }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noInterventions>
+      <div class="no-data">
+        <p>Aucune intervention assignée pour le moment.</p>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="quick-actions" *ngIf="!loading">
+    <h3>Actions rapides</h3>
+    <div class="actions-grid">
+      <a routerLink="/mechanic/interventions" class="action-card">
+        <span class="action-icon">🔧</span>
+        <span class="action-text">Voir mes interventions</span>
+      </a>
+    </div>
+  </div>
+</div>
+

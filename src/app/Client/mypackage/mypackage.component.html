@@ -1,82 +1,102 @@
 <div class="main-container">
+  <div class="package-tracking">
+    <div class="map-section">
+      <div id="map" class="map-container"></div>
+      <div class="map-info" *ngIf="selectedDelivery">
+        <h4>{{ selectedDelivery.description }}</h4>
+        <p><strong>Statut:</strong> {{ getStatusLabel(selectedDelivery.status) }}</p>
+        <p><strong>Type:</strong> {{ selectedDelivery.type }}</p>
+        <p *ngIf="selectedDelivery.driver">
+          <strong>Chauffeur:</strong> {{ selectedDelivery.driver.firstName }} {{ selectedDelivery.driver.lastName }}
+        </p>
+        <p *ngIf="selectedDelivery.station">
+          <strong>Station:</strong> {{ selectedDelivery.station.name }}
+        </p>
+      </div>
+    </div>
 
+    <div class="activity-section">
+      <div class="activity-header">
+        <h3>Mes Livraisons</h3>
+        <div class="actions">
+          <input 
+            type="text" 
+            placeholder="Rechercher..." 
+            class="search-bar"
+            [(ngModel)]="searchTerm"
+            (input)="applyFilters()" />
+          <select [(ngModel)]="statusFilter" (change)="applyFilters()">
+            <option value="ALL">Tous les statuts</option>
+            <option [value]="DeliveryStatus.PENDING">En attente</option>
+            <option [value]="DeliveryStatus.ACCEPTED">Acceptée</option>
+            <option [value]="DeliveryStatus.IN_TRANSIT">En transit</option>
+            <option [value]="DeliveryStatus.DRIVER_TRANSFER">Transférée</option>
+            <option [value]="DeliveryStatus.DELIVERED">Livrée</option>
+            <option [value]="DeliveryStatus.CANCELED">Annulée</option>
+          </select>
+          <button class="add-btn" routerLink="/client/ajoute-colis">+ Nouvelle livraison</button>
+        </div>
+      </div>
 
-    <div id="map" class="map-container"></div>
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+      <div class="loading" *ngIf="loading">Chargement...</div>
 
+      <table class="activity-table" *ngIf="!loading && filteredDeliveries.length > 0">
+        <thead>
+          <tr>
+            <th>Route</th>
+            <th>Description</th>
+            <th>Date de création</th>
+            <th>Type</th>
+            <th>Statut</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            *ngFor="let delivery of filteredDeliveries"
+            [class.selected]="selectedDelivery?.id === delivery.id"
+            (click)="selectDelivery(delivery)">
+            <td>
+              <div class="route">
+                <span class="city">{{ delivery.departureAddress.city }}</span>
+                <div class="line"></div>
+                <span class="city">{{ delivery.arrivalAddress.city }}</span>
+              </div>
+              <div class="route-details">
+                <small>{{ delivery.departureAddress.region }} → {{ delivery.arrivalAddress.region }}</small>
+              </div>
+            </td>
+            <td>{{ delivery.description }}</td>
+            <td>{{ formatDate(delivery.createdAt) }}</td>
+            <td>
+              <span class="type-badge type-{{ delivery.type.toLowerCase() }}">
+                {{ delivery.type }}
+              </span>
+            </td>
+            <td>
+              <span class="status status-{{ getStatusClass(delivery.status) }}">
+                {{ getStatusLabel(delivery.status) }}
+              </span>
+            </td>
+            <td>
+              <button class="btn-track" (click)="selectDelivery(delivery); $event.stopPropagation()">
+                📍 Suivre
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
-    <span class="activity">
-  <div class="activity-header" (click)="onClick()">
-    <h3>Activity</h3>
-    <div class="actions">
-      <input type="text" placeholder="Search..." class="search-bar" />
-      <select>
-        <option>Sort by: All</option>
-        <option>In Delivery</option>
-        <option>Delivered</option>
-      </select>
-      <button class="add-btn" routerLink="/client/ajoute-colis">+ Add Delivery</button>
+      <div class="no-data" *ngIf="!loading && filteredDeliveries.length === 0">
+        <p *ngIf="deliveries.length === 0">
+          Aucune livraison pour le moment. 
+          <a routerLink="/client/ajoute-colis">Créer une nouvelle livraison</a>
+        </p>
+        <p *ngIf="deliveries.length > 0 && filteredDeliveries.length === 0">
+          Aucune livraison ne correspond à vos critères de recherche.
+        </p>
+      </div>
     </div>
   </div>
-
-  <table class="activity-table">
-    <thead>
-      <tr>
-        <th>FLIGHT ROUTE</th>
-        <th>ARRIVAL DATE</th>
-        <th>RECIPIENT</th>
-        <th>STATUS</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div class="route">
-            <span class="city">Las Vegas</span>
-            <div class="line"></div>
-            <span class="city">San Francisco</span>
-          </div>
-        </td>
-        <td>Oct 28, 2024</td>
-        <td class="recipient">
-          <img src="assets/deliver1.jpg" alt="Elon" />
-          <span>Elon Musk</span>
-        </td>
-        <td><span class="status in-delivery">In Delivery</span></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="route">
-            <span class="city">San Francisco</span>
-            <div class="line"></div>
-            <span class="city">Sacramento</span>
-          </div>
-        </td>
-        <td>Nov 5, 2024</td>
-        <td class="recipient">
-          <img src="assets/deliver2.jpg" alt="Mark" />
-          <span>Mark Zuckerberg</span>
-        </td>
-        <td><span class="status in-delivery">In Delivery</span></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="route">
-            <span class="city">Sacramento</span>
-            <div class="line"></div>
-            <span class="city">San Jose</span>
-          </div>
-        </td>
-        <td>Oct 22, 2024</td>
-        <td class="recipient">
-          <img src="assets/deliver3.jpg" alt="Pavel" />
-          <span>Pavel Durov</span>
-        </td>
-        <td><span class="status delivered">Delivered</span></td>
-      </tr>
-    </tbody>
-  </table>
-</span>
-
-
-
 </div>

@@ -1,26 +1,53 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Problem } from '../models/probleme';
 import { Observable } from 'rxjs';
+import { Problem, ProblemStatus, ProblemType } from '../models/probleme';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProblemeService {
-
-  private apiUrl = 'http://localhost:8081/api/problems';
+  private readonly apiUrl = 'http://localhost:8081/api/problems';
 
   constructor(private http: HttpClient) {}
 
-  reportProblem(problem: Problem): Observable<Problem> {
-    return this.http.post<Problem>(this.apiUrl, problem);
+  reportProblemAsDriver(driverId: number, deliveryId: number, type: ProblemType, description: string): Observable<Problem> {
+    return this.http.post<Problem>(`${this.apiUrl}/driver`, null, {
+      params: {
+        driverId,
+        deliveryId,
+        type,
+        description
+      }
+    });
+  }
+
+  reportProblemAsClient(clientId: number, deliveryId: number, type: ProblemType, description: string): Observable<Problem> {
+    return this.http.post<Problem>(`${this.apiUrl}/client`, null, {
+      params: {
+        clientId,
+        deliveryId,
+        type,
+        description
+      }
+    });
   }
 
   getAllProblems(): Observable<Problem[]> {
     return this.http.get<Problem[]>(this.apiUrl);
   }
 
-  markAsResolved(id: number): Observable<void> {
-    return this.http.put<void>(`${this.apiUrl}/${id}/resolve`, {});
+  updateProblemStatus(id: number, status: ProblemStatus): Observable<Problem> {
+    return this.http.put<Problem>(`${this.apiUrl}/${id}/status`, null, {
+      params: { status }
+    });
+  }
+
+  getProblemsByDelivery(deliveryId: number): Observable<Problem[]> {
+    return this.http.get<Problem[]>(`${this.apiUrl}/delivery/${deliveryId}`);
+  }
+
+  getProblemsByStatus(status: ProblemStatus): Observable<Problem[]> {
+    return this.http.get<Problem[]>(`${this.apiUrl}/status/${status}`);
   }
 }

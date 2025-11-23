@@ -1,0 +1,66 @@
+<div class="main-container">
+  <h2>Gestion des stations</h2>
+
+  <div class="content-wrapper">
+    <div class="stations-table card">
+      <div class="card-header">
+        <h3>Liste des stations</h3>
+        <button class="btn-add" (click)="toggleForm()">
+          {{ showForm ? 'Annuler' : '+ Ajouter' }}
+        </button>
+      </div>
+
+      <div class="success" *ngIf="successMessage">{{ successMessage }}</div>
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+      <table *ngIf="stations.length > 0">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Région</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let station of stations">
+            <td>{{ station.id }}</td>
+            <td>{{ station.name }}</td>
+            <td>{{ station.region }}</td>
+            <td>
+              <button class="btn-edit" (click)="startEdit(station)">Modifier</button>
+              <button class="btn-delete" (click)="deleteStation(station)">Supprimer</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <p *ngIf="stations.length === 0" class="no-data">Aucune station enregistrée</p>
+    </div>
+
+    <div class="form-card card" *ngIf="showForm">
+      <h3>{{ editingStation ? 'Modifier la station' : 'Nouvelle station' }}</h3>
+      <form (ngSubmit)="editingStation ? updateStation() : addStation()">
+        <input 
+          type="text" 
+          placeholder="Nom de la station" 
+          [(ngModel)]="formData.name"
+          name="name" 
+          required>
+        
+        <select 
+          [(ngModel)]="formData.region"
+          name="region" 
+          required>
+          <option *ngFor="let region of regions" [value]="region">{{ region }}</option>
+        </select>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">
+            {{ editingStation ? 'Enregistrer' : 'Créer' }}
+          </button>
+          <button type="button" class="btn-secondary" (click)="cancelEdit()">Annuler</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

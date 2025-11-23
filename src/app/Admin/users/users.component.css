@@ -1,5 +1,5 @@
 .main-container {
-   width: 70vw;
+  width: 70vw;
   float: right;
   margin-top: 2vh;
   margin-right: 2vw;
@@ -8,65 +8,32 @@
   background-color: #f9fafe;
 }
 
-
-.users-container {
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  
-}
-
 h2 {
-  text-align: center;
-  margin-bottom: 20px;
   color: #333;
+  margin-bottom: 25px;
+  font-size: 1.8rem;
 }
 
-/* Card style for form and table */
+.content-wrapper {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+}
+
 .card {
   background-color: #ffffff;
   padding: 20px;
   border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   margin-bottom: 20px;
 }
 
-/* Add User Form */
-.add-user-form h3 {
-  margin-bottom: 15px;
-  color: #555;
+.card h3 {
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 1.3rem;
 }
 
-.form-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.form-row input,
-.form-row select {
-  flex: 1 1 150px;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-.form-row button.btn-add {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 16px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background-color 0.2s;
-}
-
-.form-row button.btn-add:hover {
-  background-color: #0056b3;
-}
-
-/* Users Table */
 .users-table table {
   width: 100%;
   border-collapse: collapse;
@@ -79,9 +46,8 @@ h2 {
 }
 
 .users-table thead {
-  background-color: #007bff;
+  background-color: #2b6cb0;
   color: white;
-  border-radius: 12px 12px 0 0;
 }
 
 .users-table tbody tr {
@@ -93,8 +59,42 @@ h2 {
   background-color: #f1f9ff;
 }
 
-/* Action buttons */
-.btn-edit {
+.role-badge {
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.role-admin {
+  background-color: #f3e8ff;
+  color: #7c3aed;
+}
+
+.role-client {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.role-driver {
+  background-color: #fce7f3;
+  color: #9f1239;
+}
+
+.role-mechanic {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.role-select {
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.btn-edit, .btn-save {
   background-color: #ffc107;
   color: white;
   border: none;
@@ -102,9 +102,10 @@ h2 {
   padding: 5px 10px;
   margin-right: 5px;
   cursor: pointer;
+  font-size: 0.875rem;
 }
 
-.btn-edit:hover {
+.btn-edit:hover, .btn-save:hover {
   background-color: #e0a800;
 }
 
@@ -115,85 +116,52 @@ h2 {
   border-radius: 6px;
   padding: 5px 10px;
   cursor: pointer;
+  font-size: 0.875rem;
 }
 
 .btn-delete:hover {
   background-color: #c82333;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .form-row {
-    flex-direction: column;
-  }
-
-  .form-row input,
-  .form-row select,
-  .form-row button {
-    flex: 1 1 100%;
-  }
-}
-.btn-save {
-  background-color: #28a745;
+.btn-cancel {
+  background-color: #6c757d;
   color: white;
   border: none;
   border-radius: 6px;
   padding: 5px 10px;
   cursor: pointer;
+  font-size: 0.875rem;
 }
 
-.btn-save:hover {
-  background-color: #218838;
+.btn-cancel:hover {
+  background-color: #5a6268;
 }
 
-select {
-  padding: 4px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-}
-
-
-
-
-
-.add-user-card {
-  max-width: 500px;
-  margin: 40px;
-  background: #ffffff;
-  padding: 24px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-}
-
-.add-user-card h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
-  font-weight: 600;
-}
-
-input, select {
+.add-user-card input,
+.add-user-card select {
   width: 100%;
   margin-bottom: 15px;
   padding: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
   font-size: 15px;
+  box-sizing: border-box;
 }
 
 .btn-add {
   width: 100%;
-  background-color: #007bff;
+  background-color: #2b6cb0;
   color: white;
   padding: 10px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
   transition: background-color 0.3s ease;
 }
 
 .btn-add:hover {
-  background-color: #0056b3;
+  background-color: #1e4d7a;
 }
 
 .success {
@@ -210,3 +178,16 @@ input, select {
   font-weight: 500;
 }
 
+@media (max-width: 1200px) {
+  .content-wrapper {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-container {
+    width: 95%;
+    margin: 10px auto;
+    float: none;
+  }
+}

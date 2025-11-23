@@ -14,15 +14,19 @@
             <i class="icon">📊</i>
             <span>Dashboard</span>
         </a>
-        <a href="#" class="menu-item">
-            <i class="icon">📩</i>
-            <span>Messages</span>
-            <span class="badge">2</span>
-        </a>
-        <a routerLink="/client/mypackage" class="menu-item active">
+        <a routerLink="/client/mypackage" class="menu-item">
             <i class="icon">🕊️</i>
             <span>My Package</span>
         </a>
-
+        <a routerLink="/client/factures" class="menu-item">
+            <i class="icon">🧾</i>
+            <span>Factures</span>
+        </a>
     </nav>
+    <div class="logout-section">
+        <button class="logout-btn" (click)="logout()">
+            <i class="icon">🚪</i>
+            <span>Déconnexion</span>
+        </button>
+    </div>
 </span>

@@ -1,0 +1,43 @@
+<div class="main-container">
+  <div class="factures-container">
+    <h2>Mes factures</h2>
+
+    <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+
+    <div class="factures-table card">
+      <table *ngIf="factures.length > 0; else noFactures">
+        <thead>
+          <tr>
+            <th>Référence</th>
+            <th>Livraison ID</th>
+            <th>Description</th>
+            <th>Montant (TND)</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let facture of factures">
+            <td>{{ facture.reference || 'N/A' }}</td>
+            <td>{{ facture.delivery?.id }}</td>
+            <td>{{ facture.delivery?.description || 'N/A' }}</td>
+            <td class="amount">{{ facture.montant.toFixed(2) }}</td>
+            <td>{{ facture.delivery?.createdAt | date:'short' }}</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3"><strong>Total</strong></td>
+            <td class="total-amount">
+              <strong>{{ getTotalAmount().toFixed(2) }} TND</strong>
+            </td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+      <ng-template #noFactures>
+        <p class="no-data">Aucune facture disponible</p>
+      </ng-template>
+    </div>
+  </div>
+</div>
+

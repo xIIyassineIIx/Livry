@@ -1,72 +1,109 @@
-<span class="activity">
-  <div class="activity-header">
-    <h3>Activity</h3>
-    <div class="actions">
-      <input type="text" placeholder="Search..." class="search-bar" />
-      <select>
-        <option>Sort by: All</option>
-        <option>In Delivery</option>
-        <option>Delivered</option>
-      </select>
-      <button class="add-btn" routerLink="/client/ajoute-colis">+ Add Delivery</button>
+<div class="dashboard-container">
+  <h2>Tableau de bord</h2>
+
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+  <div class="loading" *ngIf="loading">Chargement...</div>
+
+  <div class="stats-grid" *ngIf="!loading">
+    <div class="stat-card">
+      <div class="stat-icon">📦</div>
+      <div class="stat-info">
+        <h3>{{ stats.total }}</h3>
+        <p>Total des livraisons</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">⏳</div>
+      <div class="stat-info">
+        <h3>{{ stats.pending }}</h3>
+        <p>En attente</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">🚚</div>
+      <div class="stat-info">
+        <h3>{{ stats.inTransit }}</h3>
+        <p>En transit</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <h3>{{ stats.delivered }}</h3>
+        <p>Livrées</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">💰</div>
+      <div class="stat-info">
+        <h3>{{ totalSpent.toFixed(2) }} TND</h3>
+        <p>Total dépensé</p>
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <div class="stat-icon">📊</div>
+      <div class="stat-info">
+        <h3>{{ getDeliveryPercentage() }}%</h3>
+        <p>Taux de livraison</p>
+      </div>
     </div>
   </div>
 
-  <table class="activity-table">
-    <thead>
-      <tr>
-        <th>FLIGHT ROUTE</th>
-        <th>ARRIVAL DATE</th>
-        <th>RECIPIENT</th>
-        <th>STATUS</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>
-          <div class="route">
-            <span class="city">Las Vegas</span>
-            <div class="line"></div>
-            <span class="city">San Francisco</span>
-          </div>
-        </td>
-        <td>Oct 28, 2024</td>
-        <td class="recipient">
-          <img src="assets/deliver1.jpg" alt="Elon" />
-          <span>Elon Musk</span>
-        </td>
-        <td><span class="status in-delivery">In Delivery</span></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="route">
-            <span class="city">San Francisco</span>
-            <div class="line"></div>
-            <span class="city">Sacramento</span>
-          </div>
-        </td>
-        <td>Nov 5, 2024</td>
-        <td class="recipient">
-          <img src="assets/deliver2.jpg" alt="Mark" />
-          <span>Mark Zuckerberg</span>
-        </td>
-        <td><span class="status in-delivery">In Delivery</span></td>
-      </tr>
-      <tr>
-        <td>
-          <div class="route">
-            <span class="city">Sacramento</span>
-            <div class="line"></div>
-            <span class="city">San Jose</span>
-          </div>
-        </td>
-        <td>Oct 22, 2024</td>
-        <td class="recipient">
-          <img src="assets/deliver3.jpg" alt="Pavel" />
-          <span>Pavel Durov</span>
-        </td>
-        <td><span class="status delivered">Delivered</span></td>
-      </tr>
-    </tbody>
-  </table>
-</span>
+  <div class="recent-section" *ngIf="!loading">
+    <div class="section-header">
+      <h3>Livraisons récentes</h3>
+      <a routerLink="/client/mypackage" class="view-all">Voir tout →</a>
+    </div>
+
+    <div class="recent-deliveries" *ngIf="recentDeliveries.length > 0; else noDeliveries">
+      <div class="delivery-card" *ngFor="let delivery of recentDeliveries">
+        <div class="delivery-header">
+          <span class="delivery-id">#{{ delivery.id }}</span>
+          <span class="status status-{{ getStatusClass(delivery.status) }}">
+            {{ getStatusLabel(delivery.status) }}
+          </span>
+        </div>
+        <p class="delivery-description">{{ delivery.description }}</p>
+        <div class="delivery-route">
+          <span class="city">{{ delivery.departureAddress.city }}</span>
+          <span class="arrow">→</span>
+          <span class="city">{{ delivery.arrivalAddress.city }}</span>
+        </div>
+        <div class="delivery-footer">
+          <span class="date">{{ formatDate(delivery.createdAt) }}</span>
+          <span class="type">{{ delivery.type }}</span>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noDeliveries>
+      <div class="no-data">
+        <p>Aucune livraison pour le moment.</p>
+        <a routerLink="/client/ajoute-colis" class="btn-primary">Créer une livraison</a>
+      </div>
+    </ng-template>
+  </div>
+
+  <div class="quick-actions" *ngIf="!loading">
+    <h3>Actions rapides</h3>
+    <div class="actions-grid">
+      <a routerLink="/client/ajoute-colis" class="action-card">
+        <span class="action-icon">➕</span>
+        <span class="action-text">Nouvelle livraison</span>
+      </a>
+      <a routerLink="/client/mypackage" class="action-card">
+        <span class="action-icon">📍</span>
+        <span class="action-text">Suivre mes colis</span>
+      </a>
+      <a routerLink="/client/factures" class="action-card">
+        <span class="action-icon">🧾</span>
+        <span class="action-text">Mes factures</span>
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,15 @@
-// src/app/models/user.ts
+import { Region } from './region';
+
 export type UserRole = 'ADMIN' | 'CLIENT' | 'DRIVER' | 'MECHANIC';
-export class User {
-    constructor(
-        public id: number,
-        public firstName: string,
-        public lastName: string,
-        public email: string,
-        public password: string,
-        public role: UserRole,
-    ) {}
+
+export interface User {
+  id?: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password?: string;
+  role: UserRole;
+  region?: Region | null;
+  longitude?: number | null;
+  latitude?: number | null;
 }

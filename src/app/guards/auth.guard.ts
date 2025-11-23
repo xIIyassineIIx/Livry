@@ -1,28 +1,25 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const authGuard: CanActivateFn = (route) => {
   const router = inject(Router);
 
-  // Role required for this route
-  const expectedRole = route.data['role'] as string;
-
-  // Get role from localStorage
+  const token = localStorage.getItem('livry_token');
   const currentRole = localStorage.getItem('userRole');
+  const expectedRole = route.data['role'];
 
-  if (!currentRole) {
-    // Not logged in
+  if (!token || !currentRole) {
     router.navigate(['/login']);
     return false;
   }
 
-  if (expectedRole && currentRole !== expectedRole) {
-    // Role does not match
-    router.navigate(['/login']);
-    return false;
+  if (expectedRole) {
+    const allowedRoles = Array.isArray(expectedRole) ? expectedRole : [expectedRole];
+    if (!allowedRoles.includes(currentRole)) {
+      router.navigate(['/login']);
+      return false;
+    }
   }
 
-
-  // Logged in and role matches
   return true;
 };

@@ -1,23 +1,121 @@
-<div class="container">
-  <h2>Register</h2>
+<div class="register-container">
+  <div class="register-wrapper">
+    <div class="register-left">
+      <div class="brand-section">
+        <h1 class="brand-title">Livry</h1>
+        <p class="brand-subtitle">Rejoignez-nous dès aujourd'hui et profitez d'un service de livraison de qualité</p>
+      </div>
+      <div class="benefits">
+        <div class="benefit-item">
+          <span class="benefit-icon">✅</span>
+          <span>Inscription gratuite</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">🚚</span>
+          <span>Livraison rapide</span>
+        </div>
+        <div class="benefit-item">
+          <span class="benefit-icon">🔒</span>
+          <span>Données sécurisées</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="register-right">
+      <div class="register-card">
+        <h2 class="register-title">Créer un compte</h2>
+        <p class="register-subtitle">Remplissez le formulaire pour commencer</p>
 
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <input type="text" placeholder="First Name" formControlName="firstName">
-    <input type="text" placeholder="Last Name" formControlName="lastName">
-    <input type="email" placeholder="Email" formControlName="email">
-    <input type="password" placeholder="Password" formControlName="password">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">Prénom</label>
+              <input 
+                type="text" 
+                id="firstName"
+                placeholder="Prénom" 
+                formControlName="firstName"
+                class="form-input"
+                [class.error]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+              <span class="error-text" *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+                Prénom requis
+              </span>
+            </div>
 
-    <select formControlName="role">
-      <option value="DRIVER">Driver</option>
-      <option value="CLIENT">Client</option>
-      <option value="ADMIN">Admin</option>
-    </select>
+            <div class="form-group">
+              <label for="lastName">Nom</label>
+              <input 
+                type="text" 
+                id="lastName"
+                placeholder="Nom" 
+                formControlName="lastName"
+                class="form-input"
+                [class.error]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+              <span class="error-text" *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+                Nom requis
+              </span>
+            </div>
+          </div>
 
-    <button type="submit" [disabled]="!registerForm.valid">Register</button>
-  </form>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input 
+              type="email" 
+              id="email"
+              placeholder="votre@email.com" 
+              formControlName="email"
+              class="form-input"
+              [class.error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            <span class="error-text" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+              Email invalide
+            </span>
+          </div>
 
-  <p *ngIf="successMessage" style="color: green;">{{ successMessage }}</p>
-  <p *ngIf="errorMessage" style="color: red;">{{ errorMessage }}</p>
+          <div class="form-group">
+            <label for="password">Mot de passe</label>
+            <input 
+              type="password" 
+              id="password"
+              placeholder="Minimum 6 caractères" 
+              formControlName="password"
+              class="form-input"
+              [class.error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            <span class="error-text" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+              Minimum 6 caractères requis
+            </span>
+          </div>
 
-  <p>Already have an account? <a routerLink="/login">Login</a></p>
+          <div class="form-group">
+            <label for="region">Région</label>
+            <select 
+              id="region"
+              formControlName="region"
+              class="form-input">
+              <option *ngFor="let region of regions" [value]="region">{{ region }}</option>
+            </select>
+          </div>
+
+          <div class="success-message" *ngIf="successMessage">
+            <span>✅</span> {{ successMessage }}
+          </div>
+
+          <div class="error-message" *ngIf="errorMessage">
+            <span>⚠️</span> {{ errorMessage }}
+          </div>
+
+          <button 
+            type="submit" 
+            class="btn-submit"
+            [disabled]="!registerForm.valid">
+            Créer mon compte
+          </button>
+        </form>
+
+        <div class="register-footer">
+          <p>Déjà un compte ? <a routerLink="/login" class="link">Se connecter</a></p>
+          <p class="home-link"><a routerLink="/" class="link">← Retour à l'accueil</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
